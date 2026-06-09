@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXUS — Multi-Agent AI Orchestration Platform</title>
+  <meta name="description" content="NEXUS is a multi-agent AI orchestration platform — 100% local & private. Describe a goal. NEXUS dispatches a team of specialist AI agents in parallel." />
+  <meta name="theme-color" content="#020617" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #020617;
+      color: #e2e8f0;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    a { color: #818cf8; text-decoration: none; transition: color 0.2s; }
+    a:hover { color: #a5b4fc; }
+    img { max-width: 100%; height: auto; }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(255,255,255,0.06);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      font-size: 0.85em;
+      line-height: 1.6;
+      color: #94a3b8;
+    }
+    hr {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      margin: 60px 0;
+    }
+    blockquote {
+      border-left: 3px solid #6366f1;
+      padding: 16px 20px;
+      margin: 24px 0;
+      background: rgba(99,102,241,0.06);
+      border-radius: 0 12px 12px 0;
+      font-style: italic;
+      color: #94a3b8;
+    }
+    strong { color: #f1f5f9; }
+
+    /* ── Background ── */
+    .bg-grid {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
+      background-size: 40px 40px;
+    }
+    .bg-glow {
+      position: fixed; top: -20%; left: -10%; width: 60%; height: 60%;
+      background: radial-gradient(ellipse, rgba(99,102,241,0.08), transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    .bg-glow-2 {
+      position: fixed; bottom: -20%; right: -10%; width: 60%; height: 60%;
+      background: radial-gradient(ellipse, rgba(16,185,129,0.06), transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 80px 0 40px;
+      text-align: center;
+    }
+    .hero-logo { width: 100px; height: 100px; margin: 0 auto 24px; }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent { color: #818cf8; font-weight: 600; }
+    .hero .subtitle {
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      color: #94a3b8;
+      font-weight: 400;
+      max-width: 640px;
+      margin: 0 auto 24px;
+    }
+    .hero .tagline {
+      font-size: 0.85rem;
+      color: #64748b;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .hero .tagline strong { color: #a5b4fc; }
+
+    /* ── Badges ── */
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin: 32px 0;
+    }
+    .badges img { height: 22px; border-radius: 4px; }
+
+    /* ── Nav ── */
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 20px;
+      margin: 24px 0 40px;
+    }
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #64748b;
+      padding: 6px 0;
+      border-bottom: 1px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover {
+      color: #e2e8f0;
+      border-bottom-color: #6366f1;
+    }
+
+    /* ── Sections ── */
+    section { margin: 48px 0; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .section-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .section-icon.indigo { background: rgba(99,102,241,0.15); }
+    .section-icon.emerald { background: rgba(16,185,129,0.15); }
+    .section-icon.amber { background: rgba(245,158,11,0.15); }
+    .section-icon.blue { background: rgba(59,130,246,0.15); }
+    .section-icon.purple { background: rgba(139,92,246,0.15); }
+    .section-icon.pink { background: rgba(236,72,153,0.15); }
+    .section-icon.cyan { background: rgba(6,182,212,0.15); }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    h2 .accent-indigo { color: #818cf8; }
+    h2 .accent-emerald { color: #34d399; }
+    h2 .accent-amber { color: #fbbf24; }
+    h2 .accent-blue { color: #60a5fa; }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 28px 0 12px;
+      color: #e2e8f0;
+    }
+
+    p { margin: 16px 0; color: #94a3b8; font-size: 0.95rem; }
+    ul, ol { margin: 16px 0; padding-left: 24px; color: #94a3b8; font-size: 0.95rem; }
+    li { margin: 6px 0; }
+
+    /* ── Cards ── */
+    .card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 16px 0;
+    }
+    .card.callout-indigo {
+      border-left: 3px solid #6366f1;
+      background: rgba(99,102,241,0.06);
+    }
+    .card.callout-emerald {
+      border-left: 3px solid #10b981;
+      background: rgba(16,185,129,0.06);
+    }
+    .card.callout-amber {
+      border-left: 3px solid #f59e0b;
+      background: rgba(245,158,11,0.06);
+    }
+    .card.callout-red {
+      border-left: 3px solid #ef4444;
+      background: rgba(239,68,68,0.06);
+    }
+
+    /* ── Tables ── */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 16px 0;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    thead { background: rgba(255,255,255,0.03); }
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 600;
+      color: #94a3b8;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: #94a3b8;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    td:first-child { font-weight: 500; color: #e2e8f0; }
+
+    /* ── Arch Diagram ── */
+    .arch-diagram {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      line-height: 1.4;
+      color: #64748b;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 20px;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .arch-diagram em { color: #818cf8; font-style: normal; }
+    .arch-diagram strong { color: #34d399; }
+
+    /* ── Pipeline ── */
+    .pipeline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 20px 0;
+    }
+    .pipeline-step {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .pipeline-step.indigo { background: rgba(99,102,241,0.12); color: #a5b4fc; }
+    .pipeline-step.emerald { background: rgba(16,185,129,0.12); color: #6ee7b7; }
+    .pipeline-step.amber { background: rgba(245,158,11,0.12); color: #fcd34d; }
+    .pipeline-step.blue { background: rgba(59,130,246,0.12); color: #93c5fd; }
+    .pipeline-step.pink { background: rgba(236,72,153,0.12); color: #f9a8d4; }
+    .pipeline-step.cyan { background: rgba(6,182,212,0.12); color: #67e8f9; }
+    .pipeline-arrow { color: #475569; font-size: 1.1rem; }
+
+    /* ── Grids ── */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+
+    /* ── Feature Box ── */
+    .feature-box {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 16px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-box:hover {
+      border-color: rgba(99,102,241,0.2);
+      transform: translateY(-1px);
+    }
+    .feature-box .icon { font-size: 1.3rem; margin-bottom: 8px; }
+    .feature-box h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: #e2e8f0; }
+    .feature-box p { font-size: 0.8rem; color: #64748b; margin: 0; }
+
+    /* ── Checklist ── */
+    .checklist { list-style: none; padding: 0; }
+    .checklist li {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 8px 0;
+    }
+    .checklist li::before {
+      content: "✓";
+      color: #34d399;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── Steps ── */
+    .steps { counter-reset: step; }
+    .step {
+      display: flex; gap: 16px;
+      padding: 16px;
+      margin: 8px 0;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+    }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-num.indigo { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+    .step-num.amber { background: rgba(245,158,11,0.15); color: #fcd34d; }
+    .step-num.emerald { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+    .step-num.blue { background: rgba(59,130,246,0.15); color: #93c5fd; }
+    .step-content h4 { font-size: 0.85rem; font-weight: 600; color: #e2e8f0; margin-bottom: 4px; }
+    .step-content p { font-size: 0.8rem; color: #64748b; margin: 0; }
+
+    /* ── Feature Table (Comparison) ── */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .comparison-col {
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .comparison-col.nexus {
+      background: rgba(16,185,129,0.06);
+      border: 1px solid rgba(16,185,129,0.15);
+    }
+    .comparison-col.competitors {
+      background: rgba(239,68,68,0.06);
+      border: 1px solid rgba(239,68,68,0.15);
+    }
+    .comparison-col h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; }
+    .comparison-col.nexus h4 { color: #6ee7b7; }
+    .comparison-col.competitors h4 { color: #fca5a5; }
+    .comparison-col ul { list-style: none; padding: 0; margin: 0; }
+    .comparison-col li {
+      padding: 4px 0;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+    .comparison-col li::before {
+      content: "•";
+      margin-right: 8px;
+    }
+    .comparison-col.nexus li::before { color: #34d399; }
+    .comparison-col.competitors li::before { color: #ef4444; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 60px 24px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      margin-top: 60px;
+    }
+    footer p { color: #475569; font-size: 0.85rem; margin: 4px 0; }
+    footer .brand { font-weight: 600; color: #64748b; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .container { padding: 0 16px; }
+      .hero { padding: 48px 0 24px; }
+      .comparison-grid { grid-template-columns: 1fr; }
+      .table-wrap { font-size: 0.75rem; }
+      td, th { padding: 8px 10px; }
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate { opacity: 0; }
+    .animate.visible { animation: fadeUp 0.5s ease forwards; }
+
+    /* ── Utility ── */
+    .text-center { text-align: center; }
+    .mt-0 { margin-top: 0; }
+    .mb-0 { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+  <div class="bg-glow-2"></div>
+
+  <div class="container">
+
+    <!-- ════════════════════ HERO ════════════════════ -->
+    <header class="hero">
+      <div class="hero-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width:100%;height:100%;overflow:visible">
+          <defs>
+            <filter id="hero-glow" x="-25%" y="-25%" width="150%" height="150%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+          </defs>
+          <g fill="none" stroke="currentColor" stroke-width="14" stroke-linejoin="round" color="#818cf8">
+            <path d="M 200,160 L 60,30 C 50,20 35,35 55,60 L 140,200 Z" stroke-width="14" />
+            <path d="M 60,30 L 90,65 L 75,80 L 55,60 Z" fill="#818cf8" stroke="none" />
+            <path d="M 312,160 L 452,30 C 462,20 477,35 457,60 L 372,200 Z" stroke-width="14" />
+            <path d="M 452,30 L 422,65 L 437,80 L 457,60 Z" fill="#818cf8" stroke="none" />
+            <polygon points="180,180 256,130 332,180 342,260 256,310 170,260" stroke-width="14" />
+            <path d="M 205,210 L 235,215 M 277,215 L 307,210" stroke-width="7" />
+            <polygon points="256,234 252,228 260,228" />
+            <circle cx="195" cy="260" r="12" stroke-width="4" />
+            <circle cx="317" cy="260" r="12" stroke-width="4" />
+          </g>
+        </svg>
+      </div>
+
+      <h1>⋆｡°✩ <span class="accent">NEXUS</span> ✩°｡⋆</h1>
+      <p class="subtitle">Multi-Agent AI Orchestration Platform — 100% Local &amp; Private</p>
+      <p class="tagline">
+        <strong>Describe a goal. NEXUS dispatches a team of specialist AI agents — in parallel — and delivers one unified answer.</strong><br />
+        Run it entirely on your own machine. No cloud dependency. No data leaves your hardware.
+      </p>
+
+      <div class="badges">
+        <img src="https://img.shields.io/badge/status-active%20development-6366f1?style=flat-square" alt="Status" />
+        <img src="https://img.shields.io/badge/local--first-%E2%9C%93-10b981?style=flat-square" alt="Local First" />
+        <img src="https://img.shields.io/badge/license-MIT-10b981?style=flat-square" alt="License" />
+        <img src="https://img.shields.io/badge/stack-Bun.js%2BHono%2BReact-3b82f6?style=flat-square" alt="Stack" />
+        <img src="https://img.shields.io/badge/llm-Ollama%20%7C%20OpenRouter-ec4899?style=flat-square" alt="LLM" />
+        <img src="https://img.shields.io/badge/ai%20agents-11-f59e0b?style=flat-square" alt="Agents" />
+        <img src="https://img.shields.io/badge/deploy-Docker%20%7C%20Bare%20Metal-06b6d4?style=flat-square" alt="Deploy" />
+      </div>
+
+      <nav class="nav-links">
+        <a href="#overview">Overview</a>
+        <a href="#why-self-host">Why Self-Host?</a>
+        <a href="#local-llm">Local LLM Setup</a>
+        <a href="#agents">Agents</a>
+        <a href="#orchestrator">Orchestrator</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#memory">Memory</a>
+        <a href="#quick-start">Quick Start</a>
+      </nav>
+    </header>
+
+    <!-- ════════════════════ OVERVIEW ════════════════════ -->
+    <section id="overview">
+      <div class="section-header">
+        <div class="section-icon indigo">✦</div>
+        <h2><span class="accent-indigo">Overview</span></h2>
+      </div>
+
+      <p><strong>NEXUS</strong> is not a chatbot. It is a <strong>multi-agent runtime</strong> where a planner agent decomposes your goals into parallel sub-tasks and dispatches them to specialist agents — a legal researcher, a financial analyst, a career strategist, a medical advisor, a travel architect, an academic tutor, and more — all working simultaneously. Their findings are merged into a single structured response streamed in real-time.</p>
+
+      <div class="card callout-indigo">
+        <p class="mt-0"><strong>In plain terms:</strong> Instead of asking one AI to do everything (like ChatGPT), NEXUS has a team of specialist AIs that work together. Tell it what you need, and it figures out which experts to use, runs them all at the same time, and gives you one combined answer.</p>
+      </div>
+
+      <h3>✦ 100% Local &amp; Private by Design</h3>
+      <p>NEXUS is built from the ground up as a <strong>local-first, self-hosted platform</strong>. Unlike every major AI platform, you can run NEXUS entirely on your own machine — no cloud dependency, no data sent to third parties, no vendor lock-in.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>What "Local-First" Means</th><th>How NEXUS Delivers</th></tr></thead>
+          <tbody>
+            <tr><td>Run on your hardware</td><td>Any machine with Docker or Bun — laptop, desktop, Raspberry Pi, or your own server</td></tr>
+            <tr><td>Use local LLMs</td><td>Connect to <a href="https://ollama.ai">Ollama</a>. Use Llama 3, Mistral, Qwen, DeepSeek, Gemma — any model, fully offline</td></tr>
+            <tr><td>All data stays local</td><td>SQLite databases, uploaded files, conversation history, context graph — everything on your machine</td></tr>
+            <tr><td>OpenClaw runs with you</td><td>The Slack bridge agent runs locally alongside NEXUS for a self-contained messaging + AI platform</td></tr>
+            <tr><td>Maximum safety</td><td>No external API calls if you use local LLMs + disable web search. Air-gap capable</td></tr>
+            <tr><td>Your models, your rules</td><td>No rate limits, no token costs, no censorship. Run 24/7 with unlimited usage</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>✦ Why NEXUS?</h3>
+      <div class="comparison-grid">
+        <div class="comparison-col nexus">
+          <h4>✅ NEXUS</h4>
+          <ul>
+            <li>Multi-agent parallel runtime</li>
+            <li><strong>100% self-hosted</strong> with Ollama, Docker</li>
+            <li>Any model via Ollama or OpenRouter</li>
+            <li>11 domain-tuned agents</li>
+            <li>Persistent cross-session context graph</li>
+            <li>All data stays on your machine</li>
+            <li>Live SSE trace of all agents</li>
+            <li>Model-agnostic — best model per task</li>
+            <li>Legal, finance, career for India</li>
+            <li><strong>Free</strong> (your compute + free LLMs)</li>
+          </ul>
+        </div>
+        <div class="comparison-col competitors">
+          <h4>✗ ChatGPT / Claude / Gemini</h4>
+          <ul>
+            <li>Single-agent sequential chat</li>
+            <li><strong>Cloud-only</strong></li>
+            <li>Vendor locked to one model</li>
+            <li>One model for everything</li>
+            <li>Session-only or limited recall</li>
+            <li>All data processed on their servers</li>
+            <li>Black-box output</li>
+            <li>Single model, vendor lock-in</li>
+            <li>US/Europe centric</li>
+            <li>Subscription for advanced features</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════ WHY SELF-HOST ════════════════════ -->
+    <section id="why-self-host">
+      <div class="section-header">
+        <div class="section-icon emerald">🔒</div>
+        <h2><span class="accent-emerald">Why Self-Host?</span></h2>
+      </div>
+
+      <div class="grid-2">
+        <div class="feature-box">
+          <div class="icon">🔒</div>
+          <h4>Privacy &amp; Data Sovereignty</h4>
+          <p>Every byte stays on your hardware. Conversations, documents, context graph — all stored locally. No telemetry, no analytics pings, no background data collection. Can run <strong>completely air-gapped</strong>.</p>
+        </div>
+        <div class="feature-box">
+          <div class="icon">💰</div>
+          <h4>Zero Operating Cost</h4>
+          <p>No OpenAI/Anthropic subscription. Use free open-source LLMs via Ollama. No per-token costs, unlimited usage, only your hardware limits you.</p>
+        </div>
+        <div class="feature-box">
+          <div class="icon">🧠</div>
+          <h4>Model Freedom</h4>
+          <p>Swap models per agent dynamically. Use Llama 3.1 8B for the Planner, Mistral Large for Legal, Qwen 2.5 for multilingual queries. Switch whenever you want.</p>
+        </div>
+        <div class="feature-box">
+          <div class="icon">⚡</div>
+          <h4>Local OpenClaw — Your Private AI Bridge</h4>
+          <p>Deploy the Slack × OpenClaw integration locally too. All messages processed on your machine. Fully self-contained messaging + AI orchestration stack.</p>
+        </div>
+      </div>
+
+      <blockquote>NEXUS is designed for the person who values privacy, control, and freedom. Everyone else's AI runs on someone else's computer. Yours runs on yours.</blockquote>
+    </section>
+
+    <!-- ════════════════════ LOCAL LLM SETUP ════════════════════ -->
+    <section id="local-llm">
+      <div class="section-header">
+        <div class="section-icon amber">🦙</div>
+        <h2><span class="accent-amber">Local LLM Setup (Ollama)</span></h2>
+      </div>
+
+      <p>NEXUS supports any LLM provider through OpenRouter, but the <strong>recommended setup</strong> is to run entirely locally with <a href="https://ollama.ai">Ollama</a>.</p>
+
+      <h3>One-Command Local Setup</h3>
+      <pre><code># 1. Install Ollama
+curl -fsSL https://ollama.ai/install.sh | sh
+
+# 2. Pull your models (pick what fits your hardware)
+ollama pull llama3.1:8b      # Fast, general purpose (~4.7GB)
+ollama pull mistral:7b        # Good reasoning (~4.1GB)
+ollama pull qwen2.5:7b        # Multilingual, strong on coding (~4.3GB)
+ollama pull nomic-embed-text  # For vector embeddings (~274MB)
+
+# 3. Start NEXUS (see Quick Start below)
+docker compose up</code></pre>
+
+      <h3>Model Configuration</h3>
+      <div class="card">
+        <pre><code># ── Use Ollama (local, free, private) ──
+MODEL_CHATBOT=ollama/llama3.1:8b
+MODEL_LEGAL=ollama/mistral:7b
+MODEL_BROKER=ollama/qwen2.5:7b
+MODEL_MEDICAL=ollama/llama3.1:8b
+MODEL_PLANNER=ollama/llama3.1:8b        # Orchestrator planner
+MODEL_EMBEDDINGS=ollama/nomic-embed-text
+
+# ── Or use OpenRouter (cloud models, pay per token) ──
+# OPENROUTER_API_KEY=sk-or-xxx
+# MODEL_CHATBOT=openrouter/meta-llama/llama-3.1-8b-instruct</code></pre>
+      </div>
+
+      <h3>Hardware Requirements</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Setup</th><th>RAM</th><th>Disk</th><th>GPU</th><th>Concurrent Agents</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Minimal</strong> (8B models)</td><td>16 GB</td><td>10 GB</td><td>Not required (CPU works)</td><td>1–2</td></tr>
+            <tr><td><strong>Recommended</strong> (8B–70B)</td><td>32 GB</td><td>30 GB</td><td>8 GB VRAM</td><td>3–5</td></tr>
+            <tr><td><strong>Power User</strong> (70B+ models)</td><td>64 GB</td><td>100 GB</td><td>24 GB VRAM</td><td>5–11</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card callout-amber">
+        <p class="mt-0 mb-0"><strong>💡 Running on CPU only?</strong> Use quantized models (e.g., <code>llama3.1:8b-q4_K_M</code>) — they use ~60% less RAM with minimal quality loss.</p>
+      </div>
+
+      <h3>Running Fully Air-Gapped</h3>
+      <p>For maximum security — no internet connection at all:</p>
+      <pre><code># 1. Install everything on an offline machine
+# 2. Pull models once while online, then disconnect
+# 3. Disable web search:
+DISABLE_WEB_SEARCH=true
+# 4. Run with no external dependencies:
+docker compose up</code></pre>
+      <p>No telemetry, no API calls, no data leaving your network. <strong>NEXUS becomes a fully self-contained AI platform on your local network.</strong></p>
+    </section>
+
+    <!-- ════════════════════ AGENTS ════════════════════ -->
+    <section id="agents">
+      <div class="section-header">
+        <div class="section-icon blue">🤖</div>
+        <h2><span class="accent-blue">11 Specialist Agents</span></h2>
+      </div>
+
+      <p>All agents work identically whether you use local Ollama models or cloud models. <strong>Only the privacy and cost differ.</strong></p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Agent</th><th>Domain</th><th>Key Capabilities</th></tr></thead>
+          <tbody>
+            <tr><td>Nexus Assistant 🧠</td><td>General AI / Life OS</td><td>Web search, project tracking, cross-agent memory, proactive nudges, daily brief</td></tr>
+            <tr><td>Voyage Architect 🗺️</td><td>Travel Planning</td><td>Flight search, hotel lookup, itinerary builder, visa info for Indian passports, INR pricing</td></tr>
+            <tr><td>Deep Search 🔍</td><td>Research &amp; Analysis</td><td>Multi-angle parallel research, source synthesis, contradiction detection, timeline builder</td></tr>
+            <tr><td>Support Desk 🎧</td><td>Customer Support</td><td>Document Q&A, ticket creation, confidence-aware responses, Hindi language support</td></tr>
+            <tr><td>Vision Canvas 🎨</td><td>Image &amp; Brand Design</td><td>AI image generation (FLUX), brand identity — palette, logos, taglines, packaging copy</td></tr>
+            <tr><td>Academic Tutor 📚</td><td>Education</td><td>Socratic drilling, Python code execution, quiz generation, study plans, flashcards</td></tr>
+            <tr><td>Medical Core ❤️</td><td>Health Info (educational)</td><td>Symptom triage, lab report analysis, drug interaction checks, Ayurveda guidance</td></tr>
+            <tr><td>Cinephile Expert 🎬</td><td>Movies &amp; TV</td><td>Personalized recommendations, streaming availability (India), regional cinema knowledge</td></tr>
+            <tr><td>Legal Helper ⚖️</td><td>Legal Research (not advice)</td><td>Indian statute &amp; case law search, contract audit, compliance scoring, clause analysis</td></tr>
+            <tr><td>Stock Broker 📈</td><td>Market Intelligence (educational)</td><td>Live stock prices (Yahoo Finance), market news, portfolio analysis, NSE/BSE support</td></tr>
+            <tr><td>Career Navigator 💼</td><td>Career Strategy</td><td>ATS resume audit, salary benchmarks (INR), mock interviews (STAR), skill gap analysis</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ════════════════════ ORCHESTRATOR ════════════════════ -->
+    <section id="orchestrator">
+      <div class="section-header">
+        <div class="section-icon purple">⚙️</div>
+        <h2><span class="accent-indigo">The Orchestrator Pipeline</span></h2>
+      </div>
+
+      <div class="card">
+        <div class="pipeline">
+          <span class="pipeline-step indigo">User Goal</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step emerald">Planner</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step amber">Context Assembly</span>
+          <span class="pipeline-arrow">↓</span>
+        </div>
+        <div class="pipeline" style="justify-content:center">
+          <span class="pipeline-step blue">Parallel Agent Execution</span>
+        </div>
+        <div class="pipeline" style="justify-content:center;gap:16px">
+          <span class="pipeline-step indigo">⚖️ Legal</span>
+          <span class="pipeline-step emerald">💼 Career</span>
+          <span class="pipeline-step amber">📈 Broker</span>
+        </div>
+        <div class="pipeline" style="justify-content:center">
+          <span class="pipeline-arrow">↓</span>
+          <span class="pipeline-step pink">Result Merger</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step cyan">Structured Briefing</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step emerald">Memory Storage</span>
+          <span class="pipeline-arrow">→</span>
+          <span class="pipeline-step indigo">SSE Delivery</span>
+        </div>
+      </div>
+
+      <h3>How It Works — Step by Step</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Step</th><th>What Happens</th><th>Technology</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1. Goal Intake</strong></td><td>User submits a goal via the chat interface</td><td><code>POST /api/orchestrate</code></td></tr>
+            <tr><td><strong>2. Context Assembly</strong></td><td>NEXUS reads profile, past conversations, active projects, and uploaded documents</td><td><code>contextGraphService</code></td></tr>
+            <tr><td><strong>3. Planning</strong></td><td>Planner agent decomposes goal into 1–4 specialist sub-tasks</td><td>Works with local or cloud LLM</td></tr>
+            <tr><td><strong>4. Parallel Execution</strong></td><td>Tasks executed via <code>Promise.all()</code> with tool calls</td><td>Runs entirely on your machine</td></tr>
+            <tr><td><strong>5. Result Merging</strong></td><td>All outputs collected and compiled into a structured briefing</td><td><code>mergeResults()</code></td></tr>
+            <tr><td><strong>6. Memory Storage</strong></td><td>Session saved to context graph for future reference</td><td>Local SQLite + pgvector</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid-2">
+        <div class="feature-box">
+          <div class="icon">📡</div>
+          <h4>Real-time Streaming</h4>
+          <p>All events streamed via Server-Sent Events with live progress indicators and execution trace.</p>
+        </div>
+        <div class="feature-box">
+          <div class="icon">🎯</div>
+          <h4>Smart Early Termination</h4>
+          <p>Detects complete answers to exit the loop early, saving tokens even with local models.</p>
+        </div>
+        <div class="feature-box">
+          <div class="icon">💾</div>
+          <h4>Tool Result Caching</h4>
+          <p>Same tool + args within the same request returns cached result — no redundant work.</p>
+        </div>
+        <div class="feature-box">
+          <div class="icon">🔄</div>
+          <h4>Automatic Retries</h4>
+          <p>Consecutive failure handling with retries across fallback models.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════ ARCHITECTURE ════════════════════ -->
+    <section id="architecture">
+      <div class="section-header">
+        <div class="section-icon cyan">🏗️</div>
+        <h2><span class="accent-cyan">Architecture</span></h2>
+      </div>
+
+      <div class="card callout-emerald">
+        <p class="mt-0 mb-0"><strong>Everything runs on your local machine.</strong> No cloud services required. No data leaves this boundary.</p>
+      </div>
+
+      <div class="arch-diagram">┌──────────────────────────────────────────────────────────┐
+│          <em>YOUR LOCAL MACHINE / SELF-HOSTED SERVER</em>          │
+│                                                          │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │              <strong>CLIENT</strong> (React + Vite)                  │  │
+│  │  Chat Views · Docs · Integration (Slack)            │  │
+│  │  Framer Motion · Tailwind CSS · Zustand             │  │
+│  └──────────────────┬──────────────────────────────────┘  │
+│                     │ HTTP / SSE (<em>localhost only</em>)         │
+│                     ▼                                      │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │              <strong>SERVER</strong> (Bun.js + Hono)                 │  │
+│  │  Router · OpenClaw Bridge · Slack OAuth             │  │
+│  │                                                     │  │
+│  │  ┌────────────────────────────────────────────┐    │  │
+│  │  │        <strong>ORCHESTRATOR ENGINE</strong>              │    │  │
+│  │  │  Planner · Agent Loop · Context Graph       │    │  │
+│  │  │  Tool Registry · Memory · Project Tracker   │    │  │
+│  │  └────────────────────────────────────────────┘    │  │
+│  │                                                     │  │
+│  │  ┌──────────┐  ┌────────────┐  ┌────────┐          │  │
+│  │  │  SQLite   │  │  Ollama    │  │  File   │          │  │
+│  │  │  Database │  │ (local LLM)│  │ Storage │          │  │
+│  │  └──────────┘  └────────────┘  └────────┘          │  │
+│  └────────────────────────────────────────────────────┘  │
+│                                                          │
+│  ┌──── <em>OpenClaw (runs locally too!)</em> ─────────────┐  │
+│  │  Slack Bridge → Local agent → NEXUS orchestrator     │  │
+│  └─────────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────┘</div>
+
+      <h3>Tech Stack — All Self-Hosted</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Layer</th><th>Technology</th><th>Local Alternative</th></tr></thead>
+          <tbody>
+            <tr><td>Frontend</td><td>React, Vite, Framer Motion, Tailwind CSS, Zustand</td><td>Bundled with Docker, served locally</td></tr>
+            <tr><td>Backend</td><td>Bun.js, Hono, TypeScript</td><td>Runs on your machine</td></tr>
+            <tr><td>Database</td><td>SQLite (better-sqlite3)</td><td><strong>Fully local</strong></td></tr>
+            <tr><td>Vector Store</td><td>SQLite + pgvector / Supabase pgvector</td><td><strong>SQLite only</strong> for full local mode</td></tr>
+            <tr><td>AI Models</td><td>Ollama (local) or OpenRouter (cloud)</td><td><strong>Ollama recommended</strong></td></tr>
+            <tr><td>Embeddings</td><td>Ollama / OpenAI</td><td>Ollama <code>nomic-embed-text</code> — fully local</td></tr>
+            <tr><td>Auth</td><td>JWT, OAuth 2.0 (Google, GitHub)</td><td>Optional — run without auth on localhost</td></tr>
+            <tr><td>Messaging</td><td>Slack API, OpenClaw, Webhooks</td><td>OpenClaw runs locally</td></tr>
+            <tr><td>Deployment</td><td>Docker, Docker Compose</td><td><code>docker compose up</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ════════════════════ MEMORY ════════════════════ -->
+    <section id="memory">
+      <div class="section-header">
+        <div class="section-icon emerald">🧠</div>
+        <h2><span class="accent-emerald">Memory &amp; Context Graph</span></h2>
+      </div>
+
+      <p>Every interaction feeds into a persistent, cross-agent memory system that every agent reads before responding. <strong>All four layers are stored locally on your machine.</strong></p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Layer</th><th>Storage</th><th>What It Stores</th><th>Superpower</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Episodic</strong></td><td>SQLite (local)</td><td>Conversation summaries, decisions, topics explored</td><td><em>"Last time you prioritized work-life balance over salary"</em></td></tr>
+            <tr><td><strong>Semantic</strong></td><td>Vector embeddings (local)</td><td>Uploaded documents, preferences, recurring goals</td><td>Silent context injection before every response</td></tr>
+            <tr><td><strong>Procedural</strong></td><td>SQLite (local)</td><td>Cross-agent action history — legal, finance, travel</td><td>Cross-domain synthesis no other tool offers</td></tr>
+            <tr><td><strong>Profile</strong></td><td>Inferred (SQLite, local)</td><td>Communication style, risk appetite, decision patterns</td><td>Adapts tone and depth to you over time</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card callout-emerald">
+        <p class="mt-0"><strong>NEXUS gets smarter the more you use it.</strong> Every new interaction compounds the system's knowledge. Switch between agents seamlessly — they all read from and write to the same context graph. All of it stays local.</p>
+      </div>
+
+      <ul class="checklist">
+        <li><strong>Cross-agent memory synthesis:</strong> "Based on your legal query last week and your portfolio analysis, here's what to watch for in your ESOP clause."</li>
+        <li><strong>Proactive nudges:</strong> "You haven't revisited your apartment search in 5 days and the deadline is approaching."</li>
+        <li><strong>Decision pattern mirroring:</strong> "When you evaluated your last 3 job offers, stability consistently ranked above salary."</li>
+        <li><strong>Style echo:</strong> After enough conversations, the agent adapts to your communication style.</li>
+      </ul>
+    </section>
+
+    <!-- ════════════════════ SLACK × OPENCLAW ════════════════════ -->
+    <section id="slack">
+      <div class="section-header">
+        <div class="section-icon amber">💬</div>
+        <h2><span class="accent-amber">Slack × OpenClaw Integration</span></h2>
+      </div>
+
+      <p>NEXUS integrates with <strong>Slack</strong> through <strong>OpenClaw</strong> — a persistent AI agent that bridges messaging platforms with multi-agent orchestration. <strong>OpenClaw runs alongside NEXUS on the same machine.</strong></p>
+
+      <div class="card callout-emerald">
+        <p class="mt-0"><strong>🏠 Runs Locally Too:</strong> All messages processed locally using your Ollama instance. No external services required.</p>
+      </div>
+
+      <ul class="checklist">
+        <li>Send a DM to OpenClaw with any question — legal, financial, medical, travel</li>
+        <li>Use <code>/nexus</code> slash command in any Slack channel to summon specialist agents</li>
+        <li>Receive proactive alerts for overdue projects and approaching deadlines</li>
+        <li>Get a daily morning briefing with project status and market updates</li>
+        <li>All messages processed locally — OpenClaw uses the same Ollama instance as NEXUS</li>
+      </ul>
+
+      <h3>Notification System</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Trigger</th><th>Frequency</th></tr></thead>
+          <tbody>
+            <tr><td>Overdue Alerts</td><td>Project past its deadline</td><td>On detection (60-min cycle)</td></tr>
+            <tr><td>Deadline Reminders</td><td>Project due within 3 days</td><td>Once per day</td></tr>
+            <tr><td>Stalled Project Alerts</td><td>No activity for 7+ days</td><td>Once per day</td></tr>
+            <tr><td>Daily Briefing</td><td>Morning summary</td><td>8 AM daily</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ════════════════════ QUICK START ════════════════════ -->
+    <section id="quick-start">
+      <div class="section-header">
+        <div class="section-icon blue">🚀</div>
+        <h2><span class="accent-blue">Quick Start</span></h2>
+      </div>
+
+      <h3>Option 1: Self-Host with Docker (Recommended)</h3>
+      <p>Get the full local experience — all data stays on your machine:</p>
+      <pre><code># 1. Install Docker &amp; Docker Compose
+
+# 2. Clone the repository
+git clone https://github.com/saarlabs/nexus
+cd nexus
+
+# 3. Install Ollama and pull models
+curl -fsSL https://ollama.ai/install.sh | sh
+ollama pull llama3.1:8b
+ollama pull nomic-embed-text
+
+# 4. Configure .env — point to your local models
+cp .env.example .env
+
+# 5. Launch everything
+docker compose up -d</code></pre>
+      <p>Open <code>http://localhost:3000</code> in your browser. <strong>That's it. You're running your own local multi-agent AI platform.</strong></p>
+
+      <h3>Option 2: Local Development (Full Control)</h3>
+      <pre><code># Terminal 1: Start Ollama
+ollama serve
+
+# Terminal 2: Start the server
+cd server && bun install && bun run dev
+
+# Terminal 3: Start the client
+cd client && npm install && npm run dev</code></pre>
+
+      <h3>Environment Variables</h3>
+      <div class="card">
+        <pre><code># ── Required ──
+OLLAMA_BASE_URL=http://localhost:11434
+MODEL_CHATBOT=ollama/llama3.1:8b
+
+# ── Optional ──
+DISABLE_WEB_SEARCH=false
+TAVILY_API_KEY=
+NEXUS_OPENCLAW_API_KEY=
+SLACK_CLIENT_ID=
+SLACK_CLIENT_SECRET=
+MODEL_EMBEDDINGS=ollama/nomic-embed-text</code></pre>
+      </div>
+    </section>
+
+    <!-- ════════════════════ LIMITATIONS ════════════════════ -->
+    <section id="limitations">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(239,68,68,0.15)">⚠️</div>
+        <h2 style="color:#fca5a5">Limitations &amp; Honesty</h2>
+      </div>
+
+      <div class="card callout-red">
+        <p class="mt-0"><strong>⚖️ Legal Helper</strong> uses web search (if enabled) to find current legal information. It does <strong>not</strong> have a built-in database of Indian statutes. Always verify with a qualified advocate.</p>
+      </div>
+      <div class="card callout-amber">
+        <p class="mt-0"><strong>📈 Stock Broker</strong> provides educational market data via Yahoo Finance. Not a Bloomberg terminal or SEBI database. Do not make investment decisions solely on AI advice.</p>
+      </div>
+      <div class="card callout-red">
+        <p class="mt-0"><strong>⚕️ Medical Core</strong> provides educational health information <strong>only</strong>. Not a substitute for professional medical advice, diagnosis, or treatment.</p>
+      </div>
+      <div class="card callout-amber">
+        <p class="mt-0"><strong>🖥️ Ollama performance</strong> depends on your hardware. Larger models (70B+) require significant RAM/VRAM. Use quantized models for resource-constrained setups.</p>
+      </div>
+    </section>
+
+    <!-- ════════════════════ REPO & OPEN SOURCE ════════════════════ -->
+    <section id="opensource">
+      <div class="section-header">
+        <div class="section-icon purple">📂</div>
+        <h2><span class="accent-indigo">Repository &amp; Open Source</span></h2>
+      </div>
+
+      <p>This repository is being prepared for public release under the <strong>MIT License</strong>. The MIT license gives you freedom to use, modify, and distribute NEXUS for any purpose — personal, commercial, or educational.</p>
+
+      <div class="card">
+        <h4 style="color:#e2e8f0;margin-bottom:12px">Coming Soon</h4>
+        <div class="grid-3">
+          <div class="feature-box" style="border-color:rgba(255,255,255,0.04)">
+            <p style="font-size:0.85rem;font-weight:500;color:#e2e8f0;margin-bottom:4px">🌍 Public repository</p>
+            <p style="font-size:0.75rem">Contributor guidelines, issue templates, CI</p>
+          </div>
+          <div class="feature-box" style="border-color:rgba(255,255,255,0.04)">
+            <p style="font-size:0.85rem;font-weight:500;color:#e2e8f0;margin-bottom:4px">📦 One-command installer</p>
+            <p style="font-size:0.75rem"><code>curl | sh</code> local setup</p>
+          </div>
+          <div class="feature-box" style="border-color:rgba(255,255,255,0.04)">
+            <p style="font-size:0.85rem;font-weight:500;color:#e2e8f0;margin-bottom:4px">🧩 Plugin system</p>
+            <p style="font-size:0.75rem">Custom personas and tools</p>
+          </div>
+          <div class="feature-box" style="border-color:rgba(255,255,255,0.04)">
+            <p style="font-size:0.85rem;font-weight:500;color:#e2e8f0;margin-bottom:4px">🖥️ CLI tool</p>
+            <p style="font-size:0.75rem">Headless operation</p>
+          </div>
+          <div class="feature-box" style="border-color:rgba(255,255,255,0.04)">
+            <p style="font-size:0.85rem;font-weight:500;color:#e2e8f0;margin-bottom:4px">🐳 ARM64 images</p>
+            <p style="font-size:0.75rem">Raspberry Pi / Apple Silicon</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════ SECURITY ════════════════════ -->
+    <section id="security">
+      <div class="section-header">
+        <div class="section-icon emerald">🔒</div>
+        <h2><span class="accent-emerald">Security</span></h2>
+      </div>
+
+      <ul class="checklist">
+        <li><strong>All data stays local</strong> — SQLite databases, uploaded files, context graph — everything on your machine</li>
+        <li><strong>No telemetry</strong> — NEXUS does not phone home. No analytics, no crash reports, no usage data</li>
+        <li><strong>Encryption at rest</strong> — all sensitive tokens encrypted with AES-256-GCM</li>
+        <li><strong>Slack OAuth tokens</strong> exchanged server-side, never exposed to the client</li>
+        <li><strong>HMAC-SHA256 signature verification</strong> for Slack slash commands with anti-replay protection</li>
+        <li><strong>Air-gap capable</strong> — with local LLMs and <code>DISABLE_WEB_SEARCH=true</code>, requires zero network connectivity</li>
+      </ul>
+
+      <blockquote>Self-hosting is the most secure way to use NEXUS. When you run everything locally, there's no data to intercept, no server to breach, no third-party to trust. Your AI platform. Your hardware. Your data. Your rules.</blockquote>
+    </section>
+
+    <!-- ════════════════════ FOOTER ════════════════════ -->
+    <footer>
+      <p class="brand">Built by Saar Labs</p>
+      <p>India's first fully self-hostable multi-agent AI orchestration platform</p>
+      <p>Run it anywhere. Own everything. Trust nothing but your own hardware.</p>
+      <p style="margin-top:20px"><a href="https://saarlabs.in">saarlabs.in</a> · <a href="https://ollama.ai">Ollama</a></p>
+    </footer>
+
+  </div>
+
+  <script>
+    // ── Intersection Observer for staggered animations ──
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section, .feature-box, .step');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+      sections.forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>

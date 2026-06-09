@@ -1,0 +1,54 @@
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=https://api.saarlabs.in
+        - VITE_APP_NAME=NEXUS
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nexus-client.rule=Host(`saarlabs.in`) || Host(`www.saarlabs.in`)"
+      - "traefik.http.routers.nexus-client.entrypoints=websecure"
+      - "traefik.http.routers.nexus-client.tls.certresolver=letsencrypt"
+      - "traefik.http.services.nexus-client.loadbalancer.server.port=5000"
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "6000:6000"
+    env_file:
+      - ./server/.env
+    environment:
+      - PORT=6000
+      - NODE_ENV=production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nexus-server.rule=Host(`api.saarlabs.in`)"
+      - "traefik.http.routers.nexus-server.entrypoints=websecure"
+      - "traefik.http.routers.nexus-server.tls.certresolver=letsencrypt"
+      - "traefik.http.services.nexus-server.loadbalancer.server.port=6000"
+
+#  webdb:
+#    build:
+#      context: ./WebDB
+#      dockerfile: Dockerfile
+#    restart: unless-stopped
+#    ports:
+#      - "4000:4000"
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.webdb.rule=Host(`saarlabs.in`) && PathPrefix(`/WebDB`)"
+#      - "traefik.http.routers.webdb.entrypoints=websecure"
+#      - "traefik.http.routers.webdb.tls.certresolver=letsencrypt"
+#      - "traefik.http.routers.webdb.priority=100"
+#      - "traefik.http.middlewares.webdb-strip.stripprefix.prefixes=/WebDB"
+#      - "traefik.http.routers.webdb.middlewares=webdb-strip"
+#      - "traefik.http.services.webdb.loadbalancer.server.port=4000"
+
