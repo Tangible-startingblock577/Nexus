@@ -1,0 +1,43 @@
+# ── CODEOWNERS ──
+# Each line is a file pattern followed by one or more owners.
+# When a PR modifies files matching a pattern, the owners are
+# automatically requested for review.
+#
+# Order matters: later patterns take precedence over earlier ones.
+# Owners are GitHub usernames or team @org/team-name references.
+#
+# Learn more: https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# ── Global default owner ──
+# Every file in the repo requires approval from the project lead.
+* @Poi5eN
+
+# ── GitHub configuration ──
+# Workflows, issue templates, funding, codeowners — all maintained by lead.
+.github/ @Poi5eN
+
+# ── Root config & documentation files ──
+README.md @Poi5eN
+CONTRIBUTING.md @Poi5eN
+SECURITY.md @Poi5eN
+LICENSE @Poi5eN
+.gitattributes @Poi5eN
+.gitignore @Poi5eN
+.env.example @Poi5eN
+
+# ── Server (backend) ──
+# TypeScript backend — orchestrator, agents, tools, services, API routes.
+server/ @Poi5eN
+
+# ── Client (frontend) ──
+# React frontend — components, pages, stores, hooks, styles.
+client/ @Poi5eN
+
+# ── OpenClaw bridge agent ──
+# Slack integration and messaging platform bridge.
+openclaw/ @Poi5eN
+
+# ── Docker & deployment ──
+Dockerfile* @Poi5eN
+docker-compose* @Poi5eN
+deploy.sh @Poi5eN

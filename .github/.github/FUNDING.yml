@@ -1,0 +1,6 @@
+# These are supported funding model platforms for NEXUS.
+# GitHub will display a "Sponsor" button on the repository linking to these.
+
+github: [Poi5eN]                           # GitHub Sponsors (personal account)
+ko_fi: saarlabs                              # Ko-fi (one-time donations)
+custom: ['https://saarlabs.in/donate']       # Custom donation link
