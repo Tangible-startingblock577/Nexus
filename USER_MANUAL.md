@@ -20,34 +20,36 @@ You can send up to 10 messages per day without creating an account. Just start t
 
 Each "persona" is a specialist AI agent with its own expertise:
 
-| Persona | What It Does |
-|---------|-------------|
-| **Nexus Assistant** (🤖) | Your main assistant. Handles general questions, web search, project tracking |
-| **Voyage Architect** (🗺️) | Plans trips, finds flights, suggests hotels, creates itineraries |
-| **Deep Search** (🔍) | Deep research on companies, topics, competitors |
-| **Support Desk** (🎧) | Answers customer support questions, searches knowledge bases |
-| **Vision Canvas** (🎨) | Generates images and designs using AI |
-| **Academic Tutor** (📚) | Helps study, creates quizzes, explains concepts |
-| **Medical Core** (⚕️) | Educational medical information, symptom triage, lab analysis |
-| **Cinephile Expert** (🎬) | Movie recommendations, streaming info, reviews |
-| **Legal Helper** (⚖️) | Finds legal information, reviews contracts, explains laws |
-| **Stock Broker** (📈) | Stock prices, market news, investment research |
-| **Career Navigator** (💼) | Resume help, interview prep, salary research |
+| Persona                   | What It Does                                                                 |
+| ------------------------- | ---------------------------------------------------------------------------- |
+| **Nexus Assistant** (🤖)  | Your main assistant. Handles general questions, web search, project tracking |
+| **Voyage Architect** (🗺️) | Plans trips, finds flights, suggests hotels, creates itineraries             |
+| **Deep Search** (🔍)      | Deep research on companies, topics, competitors                              |
+| **Support Desk** (🎧)     | Answers customer support questions, searches knowledge bases                 |
+| **Vision Canvas** (🎨)    | Generates images and designs using AI                                        |
+| **Academic Tutor** (📚)   | Helps study, creates quizzes, explains concepts                              |
+| **Medical Core** (⚕️)     | Educational medical information, symptom triage, lab analysis                |
+| **Cinephile Expert** (🎬) | Movie recommendations, streaming info, reviews                               |
+| **Legal Helper** (⚖️)     | Finds legal information, reviews contracts, explains laws                    |
+| **Stock Broker** (📈)     | Stock prices, market news, investment research                               |
+| **Career Navigator** (💼) | Resume help, interview prep, salary research                                 |
 
 ### 4. Or Use the Orchestrator (The Real Magic)
 
 Instead of picking one persona, you can type a complex goal and NEXUS will automatically:
+
 1. **Analyze** what you need
 2. **Dispatch** the right specialist agents in parallel
 3. **Merge** their findings into one clear answer
 
-Example: *"My employer wants me to serve 90 days notice but I need to join a new company in 30 days"*
+Example: _"My employer wants me to serve 90 days notice but I need to join a new company in 30 days"_
 
 NEXUS will have the Legal Helper, Career Navigator, and Stock Broker all work on this simultaneously and give you a combined answer.
 
 ### 5. Log In for Unlimited Access
 
 Create a free account to get:
+
 - Unlimited messages (no daily limit)
 - All 10 specialist personas
 - Document upload (PDF, images, text)
@@ -81,6 +83,7 @@ You can actually **watch this happen in real-time** in the Orchestration Playgro
 ### The Context Graph (Your Personal Memory)
 
 Every time you use NEXUS, the platform remembers:
+
 - **What happened** (your conversations)
 - **What you care about** (your preferences, uploaded documents)
 - **What agents did** (past actions across all personas)
@@ -95,6 +98,7 @@ All of this is stored in your "context graph." Every agent reads this before res
 ### Document Upload
 
 You can upload PDFs, images, and text files. NEXUS will:
+
 1. Extract the text content
 2. Split it into searchable chunks
 3. Generate AI-powered analysis and summary
@@ -110,6 +114,7 @@ Most personas can search the web in real-time. This means they can access curren
 ### Code Execution
 
 The Nexus Assistant and Academic Tutor can write and execute Python and JavaScript code. This is useful for:
+
 - Complex calculations
 - Data analysis
 - Graphing mathematical functions
@@ -161,15 +166,15 @@ The Nexus Assistant and Academic Tutor can write and execute Python and JavaScri
 
 ### Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React 18, Vite, Tailwind CSS v4, Framer Motion, Zustand |
-| Backend | Bun.js, Hono framework |
-| Database | SQLite (local context) + Supabase PostgreSQL (auth/analytics) |
+| Layer         | Technology                                                               |
+| ------------- | ------------------------------------------------------------------------ |
+| Frontend      | React 18, Vite, Tailwind CSS v4, Framer Motion, Zustand                  |
+| Backend       | Bun.js, Hono framework                                                   |
+| Database      | SQLite (local context) + Supabase PostgreSQL (auth/analytics)            |
 | LLM Providers | OpenRouter (primary), Groq, NVIDIA, Ollama (dev), HuggingFace (fallback) |
-| Web Search | Tavily API (primary), ScrapeGraphAI (fallback) |
-| Auth | Email/password (bcrypt) + Google OAuth + GitHub OAuth |
-| Image Gen | HuggingFace FLUX model |
+| Web Search    | Tavily API (primary), ScrapeGraphAI (fallback)                           |
+| Auth          | Email/password (bcrypt) + Google OAuth + GitHub OAuth                    |
+| Image Gen     | HuggingFace FLUX model                                                   |
 
 ### Key Files
 
@@ -244,6 +249,7 @@ The `agentLoop()` function drives each specialist agent through multiple reasoni
 7. **Smart early termination**: Analyzes if the response contains a complete answer with closure phrases
 
 Key features:
+
 - **Tool result caching**: Same tool + arguments within a session returns cached result
 - **Multi-provider fallback**: If one LLM fails (rate limit, error), automatically rotates to the next
 - **Consecutive failure detection**: After 2 consecutive failures, breaks out to prevent infinite loops
@@ -270,6 +276,7 @@ docker compose up
 Open http://localhost:3000 in your browser.
 
 Requirements:
+
 - Docker and Docker Compose
 - OpenRouter API key (free tier available)
 - (Optional) Tavily API key for web search
@@ -277,21 +284,21 @@ Requirements:
 
 ### API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/chat` | Chat with a persona (SSE streaming or non-streaming) |
-| POST | `/api/orchestrate` | Multi-agent orchestration (SSE streaming) |
-| POST | `/api/image` | Generate an image |
-| POST | `/api/upload` | Upload and analyze a document |
-| GET | `/api/stats` | Platform statistics (public) |
-| GET | `/api/context` | User context graph |
-| POST | `/api/auth/login` | Login |
-| POST | `/api/auth/register` | Register |
-| GET | `/api/auth/me` | Verify session |
-| POST | `/api/search` | Web search |
-| GET | `/api/weather` | Weather data |
-| GET | `/api/rates` | Exchange rates |
-| GET | `/api/daily-brief` | Daily briefing for user |
+| Method | Path                 | Description                                          |
+| ------ | -------------------- | ---------------------------------------------------- |
+| POST   | `/api/chat`          | Chat with a persona (SSE streaming or non-streaming) |
+| POST   | `/api/orchestrate`   | Multi-agent orchestration (SSE streaming)            |
+| POST   | `/api/image`         | Generate an image                                    |
+| POST   | `/api/upload`        | Upload and analyze a document                        |
+| GET    | `/api/stats`         | Platform statistics (public)                         |
+| GET    | `/api/context`       | User context graph                                   |
+| POST   | `/api/auth/login`    | Login                                                |
+| POST   | `/api/auth/register` | Register                                             |
+| GET    | `/api/auth/me`       | Verify session                                       |
+| POST   | `/api/search`        | Web search                                           |
+| GET    | `/api/weather`       | Weather data                                         |
+| GET    | `/api/rates`         | Exchange rates                                       |
+| GET    | `/api/daily-brief`   | Daily briefing for user                              |
 
 ---
 
@@ -311,6 +318,7 @@ Not yet. The repository is being prepared for public release under the MIT licen
 
 **How does the context graph work?**
 Your conversations, uploaded documents, preferences, and past agent actions are stored across four memory layers:
+
 - Episodic: what happened (conversation summaries)
 - Semantic: what you care about (preferences, documents)
 - Procedural: what agents did (past tasks across personas)
@@ -328,6 +336,7 @@ Your conversations, documents, and preferences are stored in your personal conte
 NEXUS routes requests through OpenRouter, which provides access to dozens of models. Different personas use different models optimized for their domain — Llama, Hermes, Gemini, Qwen, and others. The platform has zero vendor lock-in.
 
 **What are the limitations?**
+
 - Legal Helper uses web search to find legal information — it does NOT have a built-in database of Indian statutes or case law. Always verify with a qualified advocate.
 - Stock Broker uses Yahoo Finance for stock prices and web search for news — it is NOT a dedicated Bloomberg terminal or SEBI database.
 - Medical Core provides educational information only — NEVER substitute for professional medical advice.
@@ -338,21 +347,89 @@ NEXUS routes requests through OpenRouter, which provides access to dozens of mod
 ## Troubleshooting
 
 **The chat is not responding**
+
 - Check your internet connection
 - Try refreshing the page
 - If you're not logged in, check your daily message limit (3/day for anonymous users)
 
 **The orchestrator returned an error**
+
 - The underlying LLM provider may be rate-limited. Try again in a few seconds.
 - For complex goals, try simplifying your request.
 
 **Document upload failed**
+
 - Maximum file size: 20MB
 - Supported formats: PDF, TXT, CSV, MD, JSON, DOCX, images (JPG, PNG, GIF, WebP)
 - If analysis fails, the raw text is still extracted and available
 
 **I see "All LLM endpoints are exhausted"**
 This means all AI model providers are temporarily unavailable. This is rare but can happen if free-tier rate limits are hit. Wait a few minutes and try again.
+
+### Using Your Local Ollama with NEXUS (Cloud)
+
+**Yes — every user who wants to connect their local Ollama to the cloud-deployed NEXUS must configure CORS.** This is a browser security requirement that cannot be bypassed by code changes on our end.
+
+If you're running Ollama on your local machine and want NEXUS (deployed on the cloud at saarlabs.in) to use it, you need a one-time configuration step.
+
+**Why this is needed:**
+
+Your browser runs at `https://saarlabs.in`. When the bridge needs to send a request to your local Ollama, it makes a `fetch()` call to `http://localhost:11434` from the browser. The browser's **same-origin policy** blocks this by default — a security mechanism that prevents websites from reading resources on a different origin (localhost is a different origin than saarlabs.in).
+
+You must tell Ollama to explicitly allow this by setting the `OLLAMA_ORIGINS` environment variable.
+
+**Step 1 — Configure Ollama CORS:**
+
+Stop Ollama if it's running, then restart it with:
+
+```bash
+# For saarlabs.in (replace with your domain if self-hosting):
+export OLLAMA_ORIGINS="https://saarlabs.in"
+ollama serve
+```
+
+For local-only testing, you can use a wildcard:
+
+```bash
+export OLLAMA_ORIGINS="*"
+ollama serve
+```
+
+> **Note:** Using `"*"` allows any website to use your local Ollama. Only use this for development.
+
+**Step 2 — Connect in the app:**
+
+1. Open Profile → API Keys
+2. Toggle **Use Custom API Keys** ON
+3. Under **Local LLM (Ollama)**, enter:
+   - **Ollama Server URL:** `http://localhost:11434`
+   - **Ollama Model Name:** e.g. `qwen3.5:9b`
+4. Click **Test Connection** — this runs directly from your browser to verify Ollama is reachable
+5. Click **Save API Configuration**
+6. The bridge connects automatically — you'll see a green "Bridge connected" badge
+7. Start chatting! Your messages will route through your local Ollama.
+
+**How the bridge works (technical):**
+
+```
+Your Browser (saarlabs.in)
+    │
+    ├─ WebSocket (persistent) ─────────────────┐
+    │  ▸ Server sends request through WS       │
+    │  ▸ Browser forwards to localhost:11434    │  Cloud Server
+    │  ▸ Browser sends response back through WS  │
+    │                                            │
+    └── Response returned to agent loop ─────────┘
+```
+
+The browser opens a persistent WebSocket to the cloud server. When the server needs Ollama (e.g., for chat inference), it sends a request through this WebSocket. The browser receives it, fetches `http://localhost:11434`, and streams the response back. If the bridge disconnects, NEXUS gracefully falls back to cloud providers.
+
+**If the "Test Connection" fails:**
+
+- Make sure Ollama is running (`ollama list` in terminal)
+- Make sure `OLLAMA_ORIGINS` is set correctly before starting Ollama
+- Check that no other service is using port 11434
+- If using a custom port, update the URL accordingly
 
 ---
 
